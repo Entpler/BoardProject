@@ -62,4 +62,31 @@
         ORDER BY REGDATE DESC
     </select>
 
+
+
+    <insert id="insertComment" parameterType="CommentVo">
+        <selectKey keyProperty="commentNo" resultType="int" order="BEFORE">
+            SELECT comment_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO COMMENT_TABLE (
+        COMMENTNO,
+        BOARDNO,
+        COMMENTCONTENT
+        )
+        VALUES (
+        #{commentNo},
+        #{boardNo},
+        #{commentContent}
+        )
+    </insert>
+
+
+    <select id="getCommentList" resultType="commentVo">
+        SELECT *
+        FROM COMMENT_TABLE
+        WHERE BOARDNO = #{boardNo}
+
+
+
+    </select>
 </mapper>

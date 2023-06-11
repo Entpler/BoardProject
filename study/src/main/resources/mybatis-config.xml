@@ -10,6 +10,7 @@
     <typeAliases>
         <typeAlias type="com.spring.study.model.BoardVo" alias="BoardVo"/>
         <typeAlias type="com.spring.study.model.ReplyVo" alias="ReplyVo"/>
+        <typeAlias type="com.spring.study.model.CommentVo" alias="CommentVo"/>
     </typeAliases>
 
 
