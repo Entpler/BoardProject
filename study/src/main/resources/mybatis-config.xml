@@ -3,9 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
     <typeAliases>
         <typeAlias type="com.spring.study.model.BoardVo" alias="BoardVo"/>
+        <typeAlias type="com.spring.study.model.ReplyVo" alias="ReplyVo"/>
     </typeAliases>
+
+
     <mappers>
         <mapper resource="mapper/BoardMapper.xml"/>
     </mappers>

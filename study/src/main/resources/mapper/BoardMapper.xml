@@ -7,4 +7,59 @@
         SELECT * FROM BOARD
     </select>
 
+    <insert id="insertQna">
+        <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+            SELECT board_seq.nextval from dual
+        </selectKey>
+        INSERT INTO BOARD (
+        BOARDNO,
+        TITLE,
+        CONTENT,
+        WRITER,
+        REGDATE
+        )
+        VALUES (
+        #{boardNo},
+        #{title},
+        #{content},
+        #{writer},
+        SYSDATE
+        )
+    </insert>
+
+    <select id="selectQnaList" resultType="BoardVo">
+        SELECT *
+        FROM BOARD
+        WHERE BOARDNO = #{boardNo}
+    </select>
+
+    <insert id="insertReply" parameterType="ReplyVo">
+        <selectKey keyProperty="replyNo" resultType="int" order="BEFORE">
+            SELECT reply_seq.nextval from dual
+        </selectKey>
+        INSERT INTO REPLY (
+        REPLYNO,
+        BOARDNO,
+        REPLYTITLE,
+        REPLYCONTENT,
+        WRITER,
+        REGDATE
+        )
+        VALUES (
+        #{replyNo},
+        #{boardNo},
+        #{replyTitle},
+        #{replyContent},
+        #{writer},
+        SYSDATE
+        )
+    </insert>
+
+    <select id="getReplyList" resultType="ReplyVo">
+        SELECT *
+        FROM REPLY
+        WHERE BOARDNO = #{boardNo}
+        ORDER BY REGDATE DESC
+    </select>
+
 </mapper>

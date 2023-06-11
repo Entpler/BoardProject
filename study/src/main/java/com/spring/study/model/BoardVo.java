@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class BoardVo {
 
     private Integer boardNo;
+
+    private Integer replyNo;
 
     private String title;
 
@@ -22,5 +27,12 @@ public class BoardVo {
     private String regDate;
 
     private Integer viewNo;
+    private List<ReplyVo> replyList;
 
+    public void setReplyList(List<ReplyVo> replyList) {
+        this.replyList = replyList;
+    }
+    public BoardVo() {
+
+    }
 }
