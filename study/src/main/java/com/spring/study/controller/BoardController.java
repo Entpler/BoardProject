@@ -1,8 +1,12 @@
 package com.spring.study.controller;
+import com.spring.study.common.PageInfo;
+import com.spring.study.common.Pagination;
 import com.spring.study.model.BoardVo;
 import com.spring.study.model.CommentVo;
 import com.spring.study.model.ReplyVo;
 import com.spring.study.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Controller;
@@ -23,8 +27,23 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/list")
-    public String boardList(Model model, BoardVo boardVo) {
-        List<BoardVo> list = boardService.boardList();
+    public String boardList(Model model, BoardVo boardVo, HttpServletRequest request) {
+        //페이징
+
+        int listCount = boardService.selectListCount();
+        int currentPage = request.getParameter("currentPage") != null ? Integer.parseInt(request.getParameter("currentPage")) : 1;
+        int pageLimit = 2;
+        int boardLimit = 2;
+
+        int startRow = (currentPage - 1) * boardLimit + 1;
+        int endRow = currentPage * boardLimit;
+
+        boardVo.setStartRow(startRow);
+        boardVo.setEndRow(endRow);
+
+        PageInfo pi = Pagination.getPageInfo(listCount,currentPage,pageLimit,boardLimit);
+
+        List<BoardVo> list = boardService.boardList(boardVo);
         List<ReplyVo> replyList = new ArrayList<>();
         for (BoardVo board : list) {
             Integer boardNo = board.getBoardNo();
@@ -39,6 +58,7 @@ public class BoardController {
         }
         model.addAttribute("replyList", replyList);
         model.addAttribute("list", list);
+        model.addAttribute("pi", pi);
 
         return "board/boardList";
     }

@@ -1,5 +1,6 @@
 package com.spring.study.service;
 
+import com.spring.study.common.PageInfo;
 import com.spring.study.mapper.BoardMapper;
 import com.spring.study.model.BoardVo;
 import com.spring.study.model.CommentVo;
@@ -14,8 +15,8 @@ import java.util.List;
 @Service
 public class BoardService {
     private final BoardMapper boardMapper;
-    public List<BoardVo> boardList() {
-      return boardMapper.boardList();
+    public List<BoardVo> boardList(BoardVo boardVo) {
+      return boardMapper.boardList(boardVo);
     }
 
     public BoardVo selectQnaList(BoardVo boardVo) {
@@ -41,5 +42,9 @@ public class BoardService {
 
     public  List<CommentVo> getCommentList(int boardNo) {
         return boardMapper.getCommentList(boardNo);
+    }
+
+    public int selectListCount(){
+        return boardMapper.selectListCount();
     }
 }

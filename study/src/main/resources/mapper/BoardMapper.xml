@@ -4,7 +4,17 @@
 <mapper namespace="com.spring.study.mapper.BoardMapper">
 
     <select id="boardList" resultType="BoardVo">
-        SELECT * FROM BOARD
+        SELECT *
+        FROM (
+                 SELECT ROWNUM AS RNUM, B.*
+                 FROM (
+                          SELECT *
+                          FROM BOARD
+                          ORDER BY REGDATE
+                      ) B
+                 WHERE ROWNUM &lt;= #{endRow}
+             )
+        WHERE RNUM &gt;= #{startRow}
     </select>
 
     <insert id="insertQna">
@@ -85,8 +95,10 @@
         SELECT *
         FROM COMMENT_TABLE
         WHERE BOARDNO = #{boardNo}
+    </select>
 
-
-
+    <select id="selectListCount" resultType="int">
+       SELECT COUNT(*)
+       FROM BOARD
     </select>
 </mapper>

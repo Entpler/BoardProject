@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>--%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
     table {
@@ -49,6 +48,30 @@
             </c:if>
         </c:forEach>
     </c:if>
+
+    <!--pagination-->
+    <div id="paging-area">
+
+        <c:if test="${pi.currentPage ne 1}">
+            <a href="/board/list?currentPage=${pi.currentPage-1}">[이전]</a>
+        </c:if>
+
+        <c:forEach var="p" begin="${pi.startPage}" end ="${pi.endPage}" step="1">
+            <c:choose>
+                <c:when test="${pi.currentPage eq p}">
+                    <strong>[${p}]</strong>
+                </c:when>
+                <c:otherwise>
+                    <a href="/board/list?currentPage=${p}">[${p}]</a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <c:if test ="${pi.currentPage ne pi.maxPage}">
+            <a href="/board/list?currentPage=${pi.currentPage + 1}">[다음]</a>
+        </c:if>
+    </div>
+
     <tr>
         <td colspan="4" class="button-container">
             <form method="get" action="/board/insertQna">

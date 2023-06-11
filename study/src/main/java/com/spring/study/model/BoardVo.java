@@ -14,6 +14,10 @@ import java.util.List;
 @ToString
 public class BoardVo {
 
+
+    private int startRow; // 페이지 처리를 위한 시작 행
+    private int endRow; // 페이지 처리를 위한 끝 행
+
     private Integer boardNo;
 
     private Integer replyNo;

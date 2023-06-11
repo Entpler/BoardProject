@@ -1,5 +1,6 @@
 package com.spring.study.mapper;
 
+import com.spring.study.common.PageInfo;
 import com.spring.study.model.BoardVo;
 import com.spring.study.model.CommentVo;
 import com.spring.study.model.ReplyVo;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
-    List<BoardVo> boardList();
+    List<BoardVo> boardList(BoardVo boardVo);
 
     BoardVo selectQnaList(BoardVo boardVo);
 
@@ -22,4 +23,6 @@ public interface BoardMapper {
   int insertComment(CommentVo commentVo);
 
     List<CommentVo> getCommentList(int boardNo);
+
+    int selectListCount();
 }
