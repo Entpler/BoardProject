@@ -1,6 +1,7 @@
 package com.spring.study.controller;
 import com.spring.study.common.PageInfo;
 import com.spring.study.common.Pagination;
+import com.spring.study.model.BoardSearchDto;
 import com.spring.study.model.BoardVo;
 import com.spring.study.model.CommentVo;
 import com.spring.study.model.ReplyVo;
@@ -27,38 +28,29 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/list")
-    public String boardList(Model model, BoardVo boardVo, HttpServletRequest request) {
+    public String boardList(@ModelAttribute("search") BoardSearchDto boardSearchDto,HttpServletRequest request, Model model) {
         //페이징
 
-        int listCount = boardService.selectListCount();
-        int currentPage = request.getParameter("currentPage") != null ? Integer.parseInt(request.getParameter("currentPage")) : 1;
-        int pageLimit = 2;
-        int boardLimit = 2;
+        int listCount = boardService.selectListCount(boardSearchDto);
 
-        int startRow = (currentPage - 1) * boardLimit + 1;
-        int endRow = currentPage * boardLimit;
+        int currentPage = 1;
+        int pageLimit = 10;
+        int boardLimit = 20;
 
-        boardVo.setStartRow(startRow);
-        boardVo.setEndRow(endRow);
+        PageInfo pi = new PageInfo();
+        pi.calcPageInfo(listCount, currentPage, pageLimit, boardLimit);
+        boardSearchDto.setListCount(listCount);
 
-        PageInfo pi = Pagination.getPageInfo(listCount,currentPage,pageLimit,boardLimit);
+        List<BoardVo> list = boardService.boardList(boardSearchDto);
+        model.addAttribute("list" ,list);
+        model.addAttribute("pagination", boardSearchDto.getPageInfo());
 
-        List<BoardVo> list = boardService.boardList(boardVo);
-        List<ReplyVo> replyList = new ArrayList<>();
-        for (BoardVo board : list) {
-            Integer boardNo = board.getBoardNo();
-            if (boardNo != null) {
-                ReplyVo replyVo = new ReplyVo();
-                replyVo.setBoardNo(boardNo);
-
-                List<ReplyVo> boardReplyList = boardService.getReplyList(replyVo);
-                replyList.addAll(boardReplyList);
-                board.setReplyList(boardReplyList);
-            }
-        }
-        model.addAttribute("replyList", replyList);
+        /*int listCount = bbsService.selectBbsListCount(searchDto);
+        searchDto.setListCount(listCount);
+        List<BbsDto> list = bbsService.selectBbsList(searchDto);
         model.addAttribute("list", list);
-        model.addAttribute("pi", pi);
+        model.addAttribute("pagination", searchDto.getPagination());
+        return "bbs/list";*/
 
         return "board/boardList";
     }
